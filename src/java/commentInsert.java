@@ -22,6 +22,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.jboss.weld.servlet.SessionHolder;
 
 /**
  *
@@ -85,13 +87,16 @@ public class commentInsert extends HttpServlet {
             java.sql.Statement stmt = conn.createStatement();
             
             //int profile_id = (int)request.getAttribute("id");
-            String user_id =request.getParameter("user_id");
-            String writer_id = request.getParameter("writer_id");
+            HttpSession session = request.getSession(true);
+            Object user_id = session.getAttribute("user_id");
+            Object profilejsp_id = request.getAttribute("profilejsp_id");
+            String user_id_string = user_id.toString();
+            String writer_id = "0";//request.getParameter("writer_id");
             String comment = request.getParameter("comment");
             String comment_reply_id_string = request.getParameter("comment_reply_id");
-            int comment_reply_id = Integer.parseInt(comment_reply_id_string);            
+            int comment_reply_id = 0;//Integer.parseInt(comment_reply_id_string);            
             String profile_id_string = request.getParameter("profile_id");                    
-            int profile_id = Integer.parseInt(profile_id_string);
+            int profile_id = 0;//Integer.parseInt(profile_id_string);
             
             String insertSQL = "insert into comments"
                        + "(id,user_id,writer_id, comment, comment_reply_id, comment_time, profile_id) values"
@@ -104,7 +109,7 @@ public class commentInsert extends HttpServlet {
 
                     
             ps.setInt(1, 0);
-            ps.setString(2, user_id);
+            ps.setString(2, user_id_string);
             ps.setString(3, writer_id);
             ps.setString(4, comment);
             ps.setInt(5, comment_reply_id);
@@ -138,7 +143,8 @@ public class commentInsert extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        doGet(request, response);
     }
 
     /**

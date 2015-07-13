@@ -20,6 +20,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.jboss.weld.servlet.SessionHolder;
 
 /**
  *
@@ -75,7 +77,7 @@ public class search extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
-        String names = request.getParameter("names");
+        String names = request.getParameter("search");
         char[] arr = names.toCharArray();
         int i = 0;
         int flag =0;
@@ -145,13 +147,14 @@ public class search extends HttpServlet {
                 //RequestDispatcher rd = request.getRequestDispatcher("commentServlet");
                 //rd.forward(request, response);
             }
-            Gson gs = new Gson();
-            out.print(gs.toJson(profile));
-            
             request.setAttribute("firstName", firstName);
             request.setAttribute("lastName", lastName);
             request.setAttribute("id", id);
             request.setAttribute("email", email);
+            //HttpSession session = request.getSession(true);
+            //Object user_id = session.getAttribute("user_id");
+            //String user_id_string = user_id.toString();
+            request.setAttribute("user_id", id);
             request.getRequestDispatcher("/profile.jsp").forward(request, response);
             
             rs.close();
@@ -159,7 +162,7 @@ public class search extends HttpServlet {
             conn.close();
             
         } catch (Exception e) {
-            out.println("catch profile");
+            out.println("catch search");
         }
         
     }
@@ -175,7 +178,8 @@ public class search extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        doGet(request, response);
     }
 
     /**

@@ -149,7 +149,6 @@ public class profile extends HttpServlet {
             List<comments> commArr = new ArrayList<>();
             while(rs.next()) {
                 comments comm = new comments();
-
                 int writer_id = rs.getInt("writer_id");
                 String comment = rs.getString("comment");
                 int comment_reply_id = rs.getInt("comment_reply_id");

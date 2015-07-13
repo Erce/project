@@ -36,7 +36,18 @@
              profile.setFirstName(firstName);
              profile.setLastName(lastName);
              profile.setId(id);*/
+            //session.setAttribute("user_id", id);
         %>
+        <script>
+            $(document).ready(function() {                        
+                $('#submit').click(function(event) {  
+                    var username=$('#user').val();
+                 $.get('ActionServlet',{user:username},function(responseText) { 
+                        $('#welcometext').text(responseText);         
+                    });
+                });
+            });
+        </script>
         <section class="contents-section">
             <div class="navbar">
                 <div class="menu">
@@ -49,7 +60,12 @@
                 </div>
                 <div class="search">
                     <div class="search-bar">
-                        <input type="text" placeholder="Search" name="search" id="search">
+                        <script>
+                        </script>
+                        <form action="search" method="post">                           
+                            <input type="text" placeholder="Search" name="search" id="search">                      
+                            <input type="submit" name="Submit" id="submit" onclick="submit()">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -89,14 +105,14 @@
                                         int i = i_obj.hashCode();
                                         for (int j = 0; j < i; j++) {
                                             comments c = (comments) commArr.get(j);
-                                            
-                                            
-                                            out.print("<div class='comment-string' tag='"+ c.getId() +"' >" + c.getComment() + "</div>"
-                                                    + "<form action='commentInsert' method='POST'>"
+                                            out.print("<form action='commentInsert' method='POST'>"
+                                                    + "<div class='comment-string' tag='"+ c.getId() +"' >" + c.getComment() + "</div>"
                                                     + "<textarea wrap='hard' class='ownprofile-comment-textarea' name='comment' placeholder='Your reply...'></textarea>"
                                                     + "<input class='submit' type='submit' value='Reply'>"
                                                     + "</form>");
                                         }
+                                        
+                                        
                                     } catch (Exception e) {
                                         out.print(e);
                                     }

@@ -65,14 +65,19 @@
                                 /*out.print(profile.firstName);
                                 out.print(profile.lastName);
                                 out.print(profile.id);*/
+                                session.setAttribute("user_id", id);
+                                request.setAttribute("profilejsp_id", id);
                             %>
                             </div>
                         </div>
                         <div class="comment">
                             <div class="comment-inside">
+                                <form class="comment" action="commentInsert" method="post">
                                 <!--<textarea class="comment-input" type="text" placeholder="Your comment...">
-                                --><textarea wrap="hard" class="comment-textarea" placeholder="Your comment..."></textarea>
-                                <input class="submit" type="submit" value="Comment">
+                                --> 
+                                    <textarea wrap="hard" name="comment" class="comment-textarea" placeholder="Your comment..."></textarea>
+                                    <input class="submit" type="submit" value="Comment">
+                                </form>
                             </div>
                         </div>
                     </div>
