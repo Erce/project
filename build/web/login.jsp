@@ -22,10 +22,10 @@
         <div class="navbar">
             <div class="menu">
                 <ul class="menu-ul">
-                    <li class="menu-li"><a href="index.html"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></a></li>
-                    <li class="menu-li"><a href="search.jsp"><div class="menu-item"><h class="menu-item-h">SEARCH</h></div></a></li>
-                    <li class="menu-li"><a href="signup.jsp"><div class="menu-item"><h class="menu-item-h">SIGN UP</h></div></a></li>
-                    <li class="menu-li"><a href="about.html"><div class="menu-item"><h class="menu-item-h">ABOUT</h></div></a></li>
+                    <a href="index.html"><li class="menu-li"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></li></a>
+                    <a href="search.jsp"><li class="menu-li"><div class="menu-item"><h class="menu-item-h">SEARCH</h></div></li></a>
+                    <a href="signup.jsp"><li class="menu-li"><div class="menu-item"><h class="menu-item-h">SIGN UP</h></div></li></a>
+                    <a href="about.html"><li class="menu-li"><div class="menu-item"><h class="menu-item-h">ABOUT</h></div></li></a>
                 </ul>
             </div>
             <div class="search">
