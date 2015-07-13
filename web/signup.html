@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Sign Up</title>
+        <link href="signUp.css" rel="stylesheet" type="text/css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="menu">
+            <ul class="menu-ul">
+                <li class="menu-li"><a href="index.html"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></a></li>
+                <li class="menu-li"><a href="login.jsp"><div class="menu-item"><h class="menu-item-h">LOGIN</h></div></a></li>
+                <li class="menu-li"><a href="search.jsp"><div class="menu-item"><h class="menu-item-h">SEARCH</h></div></a></li>
+                <li class="menu-li"><a href="signup.html"><div class="menu-item"><h class="menu-item-h">SIGN UP</h></div></a></li>
+                <li class="menu-li"><a href="about.html"><div class="menu-item"><h class="menu-item-h">ABOUT</h></div></a></li>
+            </ul>
+        </div>
+        <div class="mainPage">
+            <div class="form">
+                <form method="post" action="signUp">
+                    <div class="inside-form">
+                        First Name: <input type="text" name="firstName"><br>
+                        Last Name: <input type="text" name="lastName"><br>
+                        E-mail: <input type="text" name="email"><br>
+                        Date of Birth: <br>
+                        Day: <select name="day"><option value=""></option></select>
+                        Month: <select name="month"><option value=""></option></select>
+                        Year: <select name="year"><option value=""></option></select><br>
+                        Password: <input type="password" name="password"><br>
+                        Password Check: <input type="password" name="password"><br>
+                        Gender: <select name="gender"><option></option></select><br>
+                        <input type="submit" id="submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
