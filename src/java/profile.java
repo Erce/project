@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.swing.plaf.basic.BasicBorders;
 
 /**
@@ -141,30 +142,59 @@ public class profile extends HttpServlet {
                 out.print(gs.toJson(res));
             }
             
+            //HttpSession session = request.getSession(true);
+            String sql1;
             
-            sql = "select * from comments where user_id='" + user_id + "' and comment_reply_id=0";
-            rs = stmt.executeQuery(sql);
+            if(request.getAttribute("user_id") != null) {
+                user_id = (int) request.getAttribute("user_id");
+                sql1 = "select * from comments where user_id=" + user_id;
+                String sql2 = "select * from profilepage where id=" + user_id;
+                ResultSet rs1 = stmt.executeQuery(sql2);
+                rs1.next();
+                String firstName = rs1.getString("firstName");
+                String lastName = rs1.getString("lastName");
+                String imgurl = rs1.getString("imgurl");
+                request.setAttribute("firstName", firstName);
+                request.setAttribute("lastName", lastName);
+                request.setAttribute("imgurl", imgurl);
+                rs = stmt.executeQuery(sql1);
+            }
+            else {
+                sql = "select * from comments where user_id=" + user_id;
+                rs = stmt.executeQuery(sql);
+            }
+
             int count = 0;
             //String ad = rs.getString("first");
             //String soyad = rs.getString("soyad");
             
             List<comments> commArr = new ArrayList<>();
+            List<comments> replyArr = new ArrayList<>();
             while(rs.next()) {
                 comments comm = new comments();
                 int writer_id = rs.getInt("writer_id");
                 String comment = rs.getString("comment");
                 int comment_reply_id = rs.getInt("comment_reply_id");
+                int comm_id = rs.getInt("id");
+                comm.setId(comm_id);
                 comm.setUser_id(user_id);
                 comm.setWriter_id(writer_id);
                 comm.setComment(comment);
                 comm.setComment_reply_id(comment_reply_id);
-                commArr.add(comm);
+                if( comment_reply_id == 0 ) {
+                    commArr.add(comm);
+                }
+                else if( comment_reply_id == 1 ) {
+                    replyArr.add(comm);
+                }
                 count++;
             }
 
             request.setAttribute("comm", commArr);
+            request.setAttribute("replyArr", replyArr);
             request.setAttribute("count", 8);
             
+            request.setAttribute("user_id", user_id);
             RequestDispatcher rd = request.getRequestDispatcher("ownprofile.jsp");
             rd.forward(request, response);
             

@@ -28,6 +28,7 @@
             Object lastName = request.getAttribute("lastName");
             Object id = request.getAttribute("id");
             Object imgurl = request.getAttribute("imgurl");
+            Object user_id = request.getAttribute("user_id");
             /*profileClass profile = new profileClass();
              String firstName = request.getParameter("firstName");
              String lastName = request.getParameter("lastName");
@@ -64,7 +65,7 @@
                         </script>
                         <form action="search" method="post">                           
                             <input type="text" placeholder="Search" name="search" id="search">                      
-                            <input type="submit" name="Submit" id="submit" onclick="submit()">
+                            <input type="submit" name="Submit" value="Search" id="submit" onclick="submit()">
                         </form>
                     </div>
                 </div>
@@ -100,16 +101,30 @@
                                         Object i_obj = request.getAttribute("count");
                                         //comments comm = new comments();
                                         List commArr = (List) request.getAttribute("comm");
-                                        request.setAttribute("user_id", id);
-                                        
+                                        List replyArr = (List) request.getAttribute("replyArr");
+                                        session.setAttribute("user_id_ownprofile", id);
+                                        //request.setAttribute("user_id", id);
+                                        int k=1;
                                         int i = i_obj.hashCode();
                                         List arr=null;
                                         for (int j = 0; j < i; j++) {
                                             comments c = (comments) commArr.get(j);
+                                            comments r;
                                             
-                                            out.print("<form action='commentReply' method='get'>"
-                                                    + "<div class='comment-string' name='div' tag='"+ c.getId() +"' >" + c.getComment() + "</div>"
-                                                    + "<textarea wrap='hard' class='ownprofile-comment-textarea' name='comment' placeholder='Your reply...'></textarea>"
+                                            out.print("<form action='commentInsertReply' method='post'>"
+                                                    + "<input type='hidden' name='reply_id' value='" + c.getId() + "'>"
+                                                    + "<div class='comment-string' value='"+ c.getId() +"' >" + c.getComment() + "</div>");
+                                            
+                                            k = replyArr.size();
+                                            
+                                            for(int l=0; l<k; l++) {
+                                                r = (comments) replyArr.get(l);                                            
+                                                if(r.getWriter_id()==c.getId()) {
+                                                    out.print("<div class='comment-string' style='float: right;'>" + r.getComment() + "</div><br>");
+                                                }
+                                            }
+                                                    
+                                            out.print("<textarea wrap='hard' class='ownprofile-comment-textarea' name='reply' placeholder='Your reply...'></textarea>"
                                                     + "<input class='submit' type='submit' value='Reply'>"
                                                     + "</form>");
                                         }
