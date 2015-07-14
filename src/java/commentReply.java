@@ -58,6 +58,9 @@ public class commentReply extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
+        PrintWriter out = response.getWriter();
+        
+        out.print("asdqwe");
     }
 
     /**

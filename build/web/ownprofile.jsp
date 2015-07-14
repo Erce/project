@@ -107,7 +107,7 @@
                                         for (int j = 0; j < i; j++) {
                                             comments c = (comments) commArr.get(j);
                                             
-                                            out.print("<form action='commentReply' method='POST'>"
+                                            out.print("<form action='commentReply' method='get'>"
                                                     + "<div class='comment-string' name='div' tag='"+ c.getId() +"' >" + c.getComment() + "</div>"
                                                     + "<textarea wrap='hard' class='ownprofile-comment-textarea' name='comment' placeholder='Your reply...'></textarea>"
                                                     + "<input class='submit' type='submit' value='Reply'>"
