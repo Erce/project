@@ -26,7 +26,7 @@
         <%
             Object firstName = request.getAttribute("firstName");
             Object lastName = request.getAttribute("lastName");
-            Object id = request.getAttribute("id");
+            Object id = request.getAttribute("user_id");
             Object imgurl = request.getAttribute("imgurl");
             Object user_id = request.getAttribute("user_id");
             /*profileClass profile = new profileClass();
@@ -48,6 +48,31 @@
                     });
                 });
             });
+            
+            function reply(reply,reply_id) {
+                var xmlhttp;
+                if (window.XMLHttpRequest)
+                {// code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp=new XMLHttpRequest();
+                }
+                else
+                {// code for IE6, IE5
+                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                    xmlhttp.onreadystatechange=function() {
+                        if (xmlhttp.readyState===4 && xmlhttp.status===200)
+                        {
+                            document.getElementById("myDiv").innerHTML=xmlhttp.responseText;  
+                        }
+                    };
+                //xmlhttp.open("post","commentInsertReply",true);
+                //xmlhttp.send();
+                var mypostrequest=new ajaxRequest();
+                var parameters="reply="+reply+"&reply_id="+reply_id;
+                mypostrequest.open("POST", "commentInsertReply", true);
+                mypostrequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                mypostrequest.send(parameters);
+            }
         </script>
         <section class="contents-section">
             <div class="navbar">
@@ -102,7 +127,8 @@
                                         //comments comm = new comments();
                                         List commArr = (List) request.getAttribute("comm");
                                         List replyArr = (List) request.getAttribute("replyArr");
-                                        session.setAttribute("user_id_ownprofile", id);
+                                           
+                                        //session.setAttribute("user_id_ownprofile", id);
                                         //request.setAttribute("user_id", id);
                                         int k=1;
                                         int i = i_obj.hashCode();
@@ -111,21 +137,22 @@
                                             comments c = (comments) commArr.get(j);
                                             comments r;
                                             
-                                            out.print("<form action='commentInsertReply' method='post'>"
+                                            out.print("<form action=''>"
                                                     + "<input type='hidden' name='reply_id' value='" + c.getId() + "'>"
-                                                    + "<div class='comment-string' value='"+ c.getId() +"' >" + c.getComment() + "</div>");
+                                                    + "<div class='comment-string' value='"+ c.getId() +"' id='"
+                                                    + c.getId() + "')'>" + c.getComment() + "</div>");
                                             
                                             k = replyArr.size();
-                                            
+                                            r=null;
                                             for(int l=0; l<k; l++) {
                                                 r = (comments) replyArr.get(l);                                            
                                                 if(r.getWriter_id()==c.getId()) {
-                                                    out.print("<div class='comment-string' style='float: right;'>" + r.getComment() + "</div><br>");
+                                                    out.print("<div class='comment-string' style='float: right;' id='myDiv'>" + r.getComment() + "</div><br>");
                                                 }
                                             }
                                                     
                                             out.print("<textarea wrap='hard' class='ownprofile-comment-textarea' name='reply' placeholder='Your reply...'></textarea>"
-                                                    + "<input class='submit' type='submit' value='Reply'>"
+                                                    + "<input class='submit' type='submit' value='Reply' onsubmit='reply("+r.getComment()+","+c.getId()+")'>"
                                                     + "</form>");
                                         }
                                         

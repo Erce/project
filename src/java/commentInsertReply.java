@@ -24,6 +24,7 @@ import java.util.List;
 import javax.mail.Session;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,8 +75,7 @@ public class commentInsertReply extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        PrintWriter out = response.getWriter();
-        out.print("asdqwe");
+        doPost(request, response);
     }
 
     /**
@@ -106,9 +106,24 @@ public class commentInsertReply extends HttpServlet {
             Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
             java.sql.Statement stmt = conn.createStatement();
 
-            HttpSession session = request.getSession(true);
+            //HttpSession session = request.getSession(true);
+            //int user_id = (int) session.getAttribute("user_id_ownprofile");
             
-            int user_id = (int) session.getAttribute("user_id_ownprofile");
+            Cookie cookie = null;
+            Cookie[] cookies = null;
+            cookies = request.getCookies();
+            
+            String name;
+            String user_id_string="0";
+            for(int i=0; i<cookies.length; i++) {
+                cookie = cookies[i];
+                name = cookie.getName();
+                if(name.equals("user_id")) {
+                    user_id_string = cookie.getValue();
+                    break;
+                }
+            }
+            
             int comment_reply_id = 1;
             String value = request.getParameter("reply_id");
             int value_int = Integer.parseInt(value);
@@ -124,7 +139,8 @@ public class commentInsertReply extends HttpServlet {
             java.util.Date myDate = new java.util.Date("10/10/2009");
             java.sql.Date sqlDate = new java.sql.Date(myDate.getTime());
 
-                    
+            int user_id = Integer.parseInt(user_id_string);
+            
             ps.setInt(1, 0);
             ps.setInt(2, user_id);
             ps.setInt(3, value_int);
@@ -145,8 +161,8 @@ public class commentInsertReply extends HttpServlet {
             conn.close();
             
             request.setAttribute("user_id", user_id);
-            RequestDispatcher rd = request.getRequestDispatcher("profile");
-            rd.forward(request, response);
+//            RequestDispatcher rd = request.getRequestDispatcher("profile");
+//            rd.forward(request, response);
             
         } catch (Exception e) {
             out.println(e);

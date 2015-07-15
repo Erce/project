@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -91,7 +92,7 @@ public class login extends HttpServlet {
             Statement stmt = conn.createStatement();
             
             String sql;
-            sql = "select email,password from profilepage where email='" + email + "'";
+            sql = "select * from profilepage where email='" + email + "'";
             ResultSet rs = stmt.executeQuery(sql);
             //rs.next();
             //out.println("<font color='red'><b>asdfasdfasdfa</b></font>");
@@ -99,6 +100,22 @@ public class login extends HttpServlet {
                 out.println(rs.getString("email"));
                 if( rs.getString("password").equals(password))
                 {
+                    int id = rs.getInt("id");
+                    String id_string = Integer.toString(id);
+                    
+                    Cookie id_cookie = new Cookie("user_id", id_string);
+                    Cookie firstName = new Cookie("firstName", rs.getString("firstName"));
+                    Cookie lastName = new Cookie("lastName", rs.getString("lastName"));
+                    Cookie imgurl = new Cookie("imgurl", rs.getString("imgurl"));
+                    id_cookie.setMaxAge(60*60*24);
+                    firstName.setMaxAge(60*60*24);
+                    lastName.setMaxAge(60*60*24);
+                    imgurl.setMaxAge(60*60*24);
+                    response.addCookie(id_cookie);
+                    response.addCookie(firstName);
+                    response.addCookie(lastName);
+                    response.addCookie(imgurl);
+                    
                     out.println("<font color='red'><b>password is correct</b></font>");
                     request.setAttribute("email", email);
                     RequestDispatcher rd = request.getRequestDispatcher("profile");
@@ -124,7 +141,7 @@ public class login extends HttpServlet {
             e.printStackTrace();
         } finally {
             
-            out.println("<font color='red'><b>finally login</b></font>");
+            out.println("<font color='red'><b>finally login page</b></font>");
         }
     }
 
@@ -140,62 +157,7 @@ public class login extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        
-        String JDBC_DRIVER="com.mysql.jdbc.Driver";
-        String DB_URL="jdbc:mysql://127.0.0.1:3306/profile";
-        
-        String USER="root";
-        String PASS="";
-        
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
-        
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-            
-        //out.println("entered email: " + email);
-        //out.println("entered password: " + password);
-        
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            
-            Connection conn = DriverManager.getConnection(DB_URL,USER,PASS);
-            
-            Statement stmt = conn.createStatement();
-            
-            String sql;
-            sql = "select email,password from profilepage where email='" + email + "'";
-            ResultSet rs = stmt.executeQuery(sql);
-            rs.next();
-            //out.println("<font color='red'><b>asdfasdfasdfa</b></font>");
-            out.println(rs.getString("email"));
-            if( rs.getString("password").equals(password))
-            {
-                out.println("<font color='red'><b>password is correct</b></font>");
-                request.setAttribute("email", email);
-                RequestDispatcher rd = request.getRequestDispatcher("profile");
-                rd.forward(request, response);
-            }
-            else if (rs.getString("email").isEmpty()) {
-                out.println("E-mail is not registered.");
-                RequestDispatcher rd = request.getRequestDispatcher("login");
-                rd.include(request, response);
-            }
-            else {
-                out.println("<font color='red'><b>You have entered incorrect password</b></font>");
-                RequestDispatcher rd = request.getRequestDispatcher(("login"));
-                rd.include(request, response);
-            } 
-        } catch (SQLException se) {
-            out.println("<font color='red'><b>catch1</b></font>");
-            se.printStackTrace();
-        
-        } catch ( Exception e ) {
-            out.println("<font color='red'><b>catch2</b></font>");
-            e.printStackTrace();
-        } finally {
-            out.println("<font color='red'><b>finally</b></font>");
-        }
+        doGet(request, response);
     }
 
     /**

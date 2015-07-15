@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -142,14 +143,21 @@ public class profile extends HttpServlet {
                 out.print(gs.toJson(res));
             }
             
+            Cookie cookie = null;
+            Cookie[] cookies = null;
+            
+            cookies = request.getCookies();
+            
             //HttpSession session = request.getSession(true);
             String sql1;
+            ResultSet rs1;
+            
             
             if(request.getAttribute("user_id") != null) {
                 user_id = (int) request.getAttribute("user_id");
                 sql1 = "select * from comments where user_id=" + user_id;
                 String sql2 = "select * from profilepage where id=" + user_id;
-                ResultSet rs1 = stmt.executeQuery(sql2);
+                rs1 = stmt.executeQuery(sql2);
                 rs1.next();
                 String firstName = rs1.getString("firstName");
                 String lastName = rs1.getString("lastName");
@@ -158,6 +166,20 @@ public class profile extends HttpServlet {
                 request.setAttribute("lastName", lastName);
                 request.setAttribute("imgurl", imgurl);
                 rs = stmt.executeQuery(sql1);
+            }
+            else if (cookies != null) {
+                String value=null;
+                String name;
+                for(int i=0; i<cookies.length; i++) {
+                    cookie = cookies[i];
+                    name = cookie.getName();
+                    if(name.equals("user_id")) {
+                        value = cookie.getValue();
+                        sql = "select * from comments where user_id=" + value;
+                        rs = stmt.executeQuery(sql);
+                        break;
+                    }
+                }
             }
             else {
                 sql = "select * from comments where user_id=" + user_id;
