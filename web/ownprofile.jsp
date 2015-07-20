@@ -40,18 +40,16 @@
             //session.setAttribute("user_id", id);
         %>
         <script>
-            $(document).ready(function() {                        
-                $('#submit').click(function(event) {  
-                    var username=$('#user').val();
-                 $.get('ActionServlet',{user:username},function(responseText) { 
-                        $('#welcometext').text(responseText);         
-                    });
-                });
-            });
             
-            function reply(reply,reply_id) {
+            function reply(reply_string,reply_id) {
                 var xmlhttp;
-                if (window.XMLHttpRequest)
+
+                $.get('/commentInsertReply', function(reply_string) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response text...
+                        $('#myDiv').text(reply_string);         // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
+                }
+                
+                
+                /*if (window.XMLHttpRequest)
                 {// code for IE7+, Firefox, Chrome, Opera, Safari
                     xmlhttp=new XMLHttpRequest();
                 }
@@ -64,15 +62,18 @@
                         {
                             document.getElementById("myDiv").innerHTML=xmlhttp.responseText;  
                         }
-                    };
                 //xmlhttp.open("post","commentInsertReply",true);
                 //xmlhttp.send();
                 var mypostrequest=new ajaxRequest();
-                var parameters="reply="+reply+"&reply_id="+reply_id;
-                mypostrequest.open("POST", "commentInsertReply", true);
+                var parameters="reply="+reply_string+"&reply_id="+reply_id;
+                mypostrequest.open("POST", "/commentInsertReply", true);
                 mypostrequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 mypostrequest.send(parameters);
-            }
+                
+                xmlhttp.open("GET","/project/commentInsertReply?reply="+reply_string+"&reply_id="+reply_id,true);
+                xmlhttp.send();*/
+            };
+           
         </script>
         <section class="contents-section">
             <div class="navbar">

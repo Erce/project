@@ -140,7 +140,6 @@ public class login extends HttpServlet {
             out.println("<font color='red'><b>catch2 login</b></font>");
             e.printStackTrace();
         } finally {
-            
             out.println("<font color='red'><b>finally login page</b></font>");
         }
     }
