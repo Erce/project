@@ -17,7 +17,7 @@
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="newjavascript.js"></script>
+        <script src="http://code.jquery.com/jquery.js"></script>
         <link href="style.css" rel="stylesheet" type="text/css">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login</title>
@@ -40,40 +40,20 @@
             //session.setAttribute("user_id", id);
         %>
         <script>
-            
-            function reply(reply_string,reply_id) {
-                var xmlhttp;
 
-                $.get('/commentInsertReply', function(reply_string) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response text...
-                        $('#myDiv').text(reply_string);         // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
-                }
-                
-                
-                /*if (window.XMLHttpRequest)
-                {// code for IE7+, Firefox, Chrome, Opera, Safari
-                    xmlhttp=new XMLHttpRequest();
-                }
-                else
-                {// code for IE6, IE5
-                    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-                }
-                    xmlhttp.onreadystatechange=function() {
-                        if (xmlhttp.readyState===4 && xmlhttp.status===200)
-                        {
-                            document.getElementById("myDiv").innerHTML=xmlhttp.responseText;  
-                        }
-                //xmlhttp.open("post","commentInsertReply",true);
-                //xmlhttp.send();
-                var mypostrequest=new ajaxRequest();
-                var parameters="reply="+reply_string+"&reply_id="+reply_id;
-                mypostrequest.open("POST", "/commentInsertReply", true);
-                mypostrequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                mypostrequest.send(parameters);
-                
-                xmlhttp.open("GET","/project/commentInsertReply?reply="+reply_string+"&reply_id="+reply_id,true);
-                xmlhttp.send();*/
-            };
-           
+            $(document).on('click', '.submit', function () {
+                var reply = $('#reply').val();//isim alanına yazılan veriyi bir değişkene aldık
+                var reply_id = $('reply_id').val();
+                $.ajax({// ajax işlemi başlar
+                    type: 'POST', // veri gönderme tipimiz. get olabilirdi json olabilirdi. ama biz post kullanıyoruz
+                    url: 'commentInsertReply', // post edilecek adres
+                    data: {'reply': reply, 'reply_id':reply_id}, //post edilecek veriler
+                    success: function (cevap) {// işlem başarılıysa
+                        $("#myDiv").html(cevap);
+                    }
+                });
+            });
+
         </script>
         <section class="contents-section">
             <div class="navbar">
@@ -128,36 +108,35 @@
                                         //comments comm = new comments();
                                         List commArr = (List) request.getAttribute("comm");
                                         List replyArr = (List) request.getAttribute("replyArr");
-                                           
+
                                         //session.setAttribute("user_id_ownprofile", id);
                                         //request.setAttribute("user_id", id);
-                                        int k=1;
+                                        int k = 1;
                                         int i = i_obj.hashCode();
-                                        List arr=null;
+                                        List arr = null;
                                         for (int j = 0; j < i; j++) {
                                             comments c = (comments) commArr.get(j);
                                             comments r;
-                                            
-                                            out.print("<form action=''>"
+
+                                            out.print("<div>"
                                                     + "<input type='hidden' name='reply_id' value='" + c.getId() + "'>"
-                                                    + "<div class='comment-string' value='"+ c.getId() +"' id='"
+                                                    + "<div class='comment-string' value='" + c.getId() + "' id='"
                                                     + c.getId() + "')'>" + c.getComment() + "</div>");
-                                            
+
                                             k = replyArr.size();
-                                            r=null;
-                                            for(int l=0; l<k; l++) {
-                                                r = (comments) replyArr.get(l);                                            
-                                                if(r.getWriter_id()==c.getId()) {
+                                            r = null;
+                                            for (int l = 0; l < k; l++) {
+                                                r = (comments) replyArr.get(l);
+                                                if (r.getWriter_id() == c.getId()) {
                                                     out.print("<div class='comment-string' style='float: right;' id='myDiv'>" + r.getComment() + "</div><br>");
                                                 }
                                             }
-                                                    
-                                            out.print("<textarea wrap='hard' class='ownprofile-comment-textarea' name='reply' placeholder='Your reply...'></textarea>"
-                                                    + "<input class='submit' type='submit' value='Reply' onsubmit='reply("+r.getComment()+","+c.getId()+")'>"
-                                                    + "</form>");
+
+                                            out.print("<textarea wrap='hard' class='ownprofile-comment-textarea' name='reply' id='reply' placeholder='Your reply...'></textarea>"
+                                                    + "<input class='submit' type='submit' value='Reply'>"
+                                                    + "</div>");
                                         }
-                                        
-                                        
+
                                     } catch (Exception e) {
                                         out.print(e);
                                     }
@@ -166,7 +145,7 @@
                         </div>
                     </div>
                     <div class="second-row">
-                        <div class="second-row-left"></div>
+                        <div class="second-row-left" id="second-row-left"></div>
                         <div class="second-row-middle"></div>
                         <div class="second-row-right"></div>
                     </div>
