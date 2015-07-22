@@ -42,21 +42,40 @@
         <script>
 
             $(document).on('click', '.submit', function () {
-                var reply = $('#reply').val();//isim alanına yazılan veriyi bir değişkene aldık
-                var reply_id = $('reply_id').val();
+                var reply_id = $(this).attr('id');
+                var reply = $('#reply'+reply_id).val();//isim alanına yazılan veriyi bir değişkene aldık
+                //var id = $(this).attr('reply_id');
                 $.ajax({// ajax işlemi başlar
                     type: 'POST', // veri gönderme tipimiz. get olabilirdi json olabilirdi. ama biz post kullanıyoruz
                     url: 'commentInsertReply', // post edilecek adres
-                    data: {'reply': reply, 'reply_id':reply_id}, //post edilecek veriler
-                    success: function (cevap) {// işlem başarılıysa
-                        $("#myDiv").html(cevap);
+                    data: {'reply': reply, 'reply_id': reply_id}, //post edilecek veriler
+                    success: function (reply) {// işlem başarılıysa
+                        $("<div class='comment-string' style='float: right;' id='myDiv'>" + reply + "</div><br>").appendTo('#reply-div-'+reply_id);
+                        $(".ownprofile-comment-textarea").val('');
                     }
                 });
             });
+            
+            $(document).ready(function() {
+                $('.comment-string').click(function() {
+                    var id = $(this).attr('id');
+                //$('.comment-div').css("height","100px");
+                    $("#reply-div-"+id).fadeToggle( "slow", "linear" );
+                //$('.text-area').hide();
+                });
+            });
+           
+            /*        
+            $('.outer-div-'+ $('#reply_id').val()).click(function() {
+                $('.comment-div').css("height","");
+                $('#myDiv-'+ $('#reply_id').val()).show();
+                $('.text-area').show();
+                }
+            });*/
 
         </script>
         <section class="contents-section">
-            <div class="navbar">
+            <div class="navbar" id="asdqwe">
                 <div class="menu">
                     <ul class="menu-ul">
                         <li class="menu-li"><a href="index.html"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></a></li>
@@ -108,7 +127,6 @@
                                         //comments comm = new comments();
                                         List commArr = (List) request.getAttribute("comm");
                                         List replyArr = (List) request.getAttribute("replyArr");
-
                                         //session.setAttribute("user_id_ownprofile", id);
                                         //request.setAttribute("user_id", id);
                                         int k = 1;
@@ -118,22 +136,27 @@
                                             comments c = (comments) commArr.get(j);
                                             comments r;
 
-                                            out.print("<div>"
-                                                    + "<input type='hidden' name='reply_id' value='" + c.getId() + "'>"
+                                            out.print("<div class='comment-div'>"
+                                                    + "<div id='outer-div-"+c.getId()+"'>"
+                                                    + "<input type='hidden' name='reply_id' id='reply_id' value='" + c.getId() + "'>"
                                                     + "<div class='comment-string' value='" + c.getId() + "' id='"
-                                                    + c.getId() + "')'>" + c.getComment() + "</div>");
+                                                    + c.getId() + "'>" + c.getComment() + "</div>");
 
                                             k = replyArr.size();
                                             r = null;
+                                            out.print("<div class='reply-div' id='reply-div-"+c.getId()+"'>");
                                             for (int l = 0; l < k; l++) {
                                                 r = (comments) replyArr.get(l);
                                                 if (r.getWriter_id() == c.getId()) {
                                                     out.print("<div class='comment-string' style='float: right;' id='myDiv'>" + r.getComment() + "</div><br>");
                                                 }
                                             }
-
-                                            out.print("<textarea wrap='hard' class='ownprofile-comment-textarea' name='reply' id='reply' placeholder='Your reply...'></textarea>"
-                                                    + "<input class='submit' type='submit' value='Reply'>"
+                                            out.print("</div>");
+                                            out.print("</div>" 
+                                                    + "<div class='asd'>"
+                                                    + "<textarea wrap='hard' class='ownprofile-comment-textarea' name='reply' id='reply"+c.getId()+"' placeholder='Your reply...'></textarea>"
+                                                    + "<input class='submit' type='submit' id='"+c.getId()+"' value='Reply'>"
+                                                    + "</div>"
                                                     + "</div>");
                                         }
 

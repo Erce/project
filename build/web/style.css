@@ -15,7 +15,7 @@ body {
     background-image:  url(background9.jpg);
     background-size:   cover;                      /* <------ */
     background-repeat: no-repeat;
-    background-position: center center; 
+    background-position: left top; 
     margin: 0px;
     padding: 0px;
 }
@@ -28,9 +28,9 @@ body {
     margin-left:20px;
     margin-top:20px;
     margin-bottom: 100px;
-    min-width: 1100px;
+    min-width: 900px;
     height: 100%;
-    width: 100%;
+    width: 95%;
     background-color: rgba(190,190,190,1);
 }
 
@@ -43,7 +43,7 @@ div.mainPage {
 
 .navbar {
     height: 50px;
-    min-width: 1100px;
+    min-width: 900px;
     width: 100%;
     align:center;
     overflow: auto;
@@ -235,6 +235,10 @@ h.menu-item-h {
     border-radius: 5px;
 }
 
+.reply-div {
+    display: none;
+}
+
 ::-webkit-input-placeholder { /* WebKit browsers */
     color: rgb(94,87,85);
     padding-top: -100px;
@@ -305,3 +309,4 @@ h.menu-item-h {
     height: 40px;
     width: 350px;
 }
+

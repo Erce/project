@@ -151,10 +151,10 @@ public class commentInsertReply extends HttpServlet {
                
             int i = ps.executeUpdate();
                 if(i == 1){
-                  out.println("<br>Reply has been inserted");
+                  out.println(comment);
                 }
                 else{
-                  out.println("failed to insert the reply");
+                  //out.println("failed to insert the reply");
                 }  
                 
             stmt.close();
