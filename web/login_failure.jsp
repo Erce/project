@@ -22,7 +22,7 @@
         <div class="navbar">
             <div class="menu">
                 <ul class="menu-ul">
-                    <li class="menu-li"><a href="index.html"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></a></li>
+                    <li class="menu-li"><a href="login.jsp"><div class="menu-item"><h class="menu-item-h">MAIN PAGE</h></div></a></li>
                     <li class="menu-li"><a href="search.jsp"><div class="menu-item"><h class="menu-item-h">SEARCH</h></div></a></li>
                     <li class="menu-li"><a href="signup.jsp"><div class="menu-item"><h class="menu-item-h">SIGN UP</h></div></a></li>
                     <li class="menu-li"><a href="about.html"><div class="menu-item"><h class="menu-item-h">ABOUT</h></div></a></li>
@@ -34,12 +34,15 @@
                 </div>
             </div>
         </div>
-        <div class="mainPage">
+        <div class="mainPage" style="margin-top: 40px;">
             <div class="contents">
-                <div class="content-form">
+                <div class="content-form" style="height: 370px;">
                     <div class="content-form-style">
                             <div class="inside-form">
                                 <p class="title">Sign into your account</p>
+                                <div class="form-failure">
+                                    <p class="inside-a-p">Wrong e-mail or password</p>
+                                </div>
                                 <div class="left">
                                     <div class="form" style="margin-bottom: 26px;">
                                         <a href="" id="facebook">
